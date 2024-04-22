@@ -9,6 +9,7 @@ import Socials from './Socials';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { signIn } from 'next-auth/react';
+import { StatusType } from '@/app/types';
 
 
 type Props = {}
@@ -29,12 +30,30 @@ const RegisterForm = (props: Props) => {
       onSubmit={async (values, actions) => {
         const response = await axios.post("/api/register", values)
         actions.setSubmitting(false);
-        console.log(response)
         const { data } = response;
         const { email } = data
         if (response.status === 200) {
           toast.success(`Successfully registered user: ${email}`)
-          signIn("credentials", values)
+          const response = await signIn("credentials", values);
+          if(!response?.ok) {
+            toast(`Something went wrong: ${response?.error}`)   
+          } else {
+            toast("Logged in successfully!")
+            const status: StatusType = "online"
+            axios.post("/api/users/statusUpdate", { status })
+            .then((response) => {
+              console.log("status is updated", response.data)         
+            })
+            .catch((e) => {
+              console.log("status didnt update", e)
+            })
+            .finally(() => {
+              actions.setSubmitting(false)
+            })
+          }
+          
+        } else {
+          toast("Email is used in different account...")
         }
       }}
       validationSchema={RegisterSchema}
@@ -97,7 +116,7 @@ const RegisterForm = (props: Props) => {
           />
           {errors.confirmPassword && touched.confirmPassword && <p className='text-red-400 text-sm'>{errors.confirmPassword}</p>}
           <Button
-            className="p-4 mt-4 rounded-sm shadow"
+            className="p-4 mt-4 rounded-sm shadow bg-slate-800 text-white w-64"
             variant="light"
             type="submit"
             isLoading={isSubmitting}
@@ -112,3 +131,4 @@ const RegisterForm = (props: Props) => {
 }
 
 export default RegisterForm
+

@@ -9,6 +9,8 @@ import Socials from './Socials';
 import { toast } from 'sonner';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { StatusType } from '@/app/types';
 
 
 type Props = {}
@@ -28,14 +30,25 @@ const LoginForm = (props: Props) => {
       onSubmit={async (values, actions) => {
         const response = await signIn("credentials", {
           ...values,
-          redirect: false
         })
-        actions.setSubmitting(false)
         if (!response?.ok) {
           toast(`Something went wrong: ${response?.error}`)
         } else {
+          console.log(response.status)
           toast("Logged in successfully!")
-          router.push("/users")
+          const status: StatusType = "online"
+          const statusUpdate = axios.post("/api/users/statusUpdate", { status })
+          .then((response) => {
+            console.log("status is updated", response.data)         
+          })
+          .catch((e) => {
+            console.log("status didnt update", e)
+          })
+          .finally(() => {
+            actions.setSubmitting(false)
+          })
+          router.push("/users");
+
         }
       }}
       validationSchema={LoginSchema}
@@ -71,7 +84,7 @@ const LoginForm = (props: Props) => {
           />
           {errors.password && touched.password && <p className='text-red-400 text-sm'>{errors.password}</p>}
           <Button
-            className="p-4 mt-4 rounded-sm shadow"
+            className="p-4 mt-4 rounded-sm shadow bg-slate-800 text-white w-64"
             variant="light"
             type="submit"
             isLoading={isSubmitting}

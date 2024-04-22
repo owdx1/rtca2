@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST (request: NextRequest) {
 
   try {
-    console.log("GİRİLDİ")
     const currentUser = await getCurrentUser();
     const body = await request.json();
     const { userId, isGroup, members, name } = body

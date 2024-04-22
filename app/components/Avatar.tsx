@@ -4,17 +4,21 @@ import React from 'react'
 import { Avatar as NAvatar } from '@nextui-org/react'
 
 interface AvatarPropsI {
-  user?: User
+  user?: User,
+  includeName?: boolean
 }
 
-const Avatar: React.FC<AvatarPropsI> = ({user}) => {
+const Avatar: React.FC<AvatarPropsI> = ({user, includeName}) => {
   return (
-    <Badge color="success" content="">
-      <NAvatar 
-        radius='md'
-        src={user?.image as string || "placeholder.jpg"}
-      />
-    </Badge>
+    <div>
+      <Badge color={user?.status === "online" ? "success" : "danger"} content="" className='flex flex-col items-center justify-center'>
+        <NAvatar 
+          radius='md'
+          src={user?.image as string || "/placeholder.jpg"}
+        />
+      </Badge>
+      {includeName && <p>{user?.name}</p> }
+    </div>
   )
 }
 
