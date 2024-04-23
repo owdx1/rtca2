@@ -3,12 +3,13 @@ import Avatar from '@/app/components/Avatar'
 import { FullMessageType } from '@/app/types'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { format } from "date-fns"
 import { Image } from '@nextui-org/react'
 import axios from 'axios'
 import { RiCheckDoubleFill } from "react-icons/ri";
 import { IoCheckmarkOutline } from "react-icons/io5";
+import ImageModal from './ImageModal'
 
 
 
@@ -51,6 +52,8 @@ const MessageBox: React.FC<MessageBoxPropsI> = ({isLast, data, isGroup}) => {
     "rounded-md py-2 px-3": !data.image
   })
 
+  const [imageModalOpen, setImageModalOpen] = useState(false)
+
   
   return (
     <div className={container}>
@@ -67,14 +70,21 @@ const MessageBox: React.FC<MessageBoxPropsI> = ({isLast, data, isGroup}) => {
           </div>
         </div>
         <div className={message}>
+          <ImageModal 
+            src={data.image as string}
+            isModalOpen={imageModalOpen}
+            onClose={() => setImageModalOpen(false)}
+          />
+
           {data.image ? 
           (
             <Image 
               alt='img'
-              width={288}
-              height={288}
+              width={200}
+              height={200}
               src={data.image}
               className="object-cover cursor-pointer hover:scale-110 transition"
+              onClick={() => setImageModalOpen(true)}
             />
           )
           : 

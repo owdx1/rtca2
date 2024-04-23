@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import FormContainer from '../components/forms/FormContainer'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Spinner } from '@nextui-org/react'
+import { Image, Spinner } from '@nextui-org/react'
+import LoadingModal from '../components/LoadingModal'
 
 
 type Props = {}
@@ -26,16 +27,18 @@ const LandingPage = (props: Props) => {
       setIsLoading(false)
     }
   } ,[session?.status, router])
-  
 
   return (
-    <div className='w-full h-full items-center justify-center flex'>
+    <div className='w-full h-full items-center justify-center flex max-sm:flex-col'>
+      <Image 
+        alt=''
+        src='/zeychat.png'
+        className='lg:flex-1'
+      />
       <FormContainer />
-      {isLoading &&
-        <div className='fixed w-full h-full bg-slate-50 flex items-center justify-center'>
-          <Spinner />
-        </div>
-      }
+      {/*isLoading &&
+        <LoadingModal />
+      */}
     </div>
   )
 }

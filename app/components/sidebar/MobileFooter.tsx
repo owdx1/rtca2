@@ -3,8 +3,15 @@
 import useConversation from "@/app/hooks/useConversation"
 import useRoutes from "@/app/hooks/useRoutes"
 import MobileItem from "./MobileItem"
+import { User } from "@prisma/client"
+import React from "react"
+import Avatar from "../Avatar"
 
-const MobileFooter = () => {
+interface MobileFooterPropsI {
+  currentUser: User
+}
+
+const MobileFooter: React.FC<MobileFooterPropsI> = ({ currentUser }) => {
 
   const routes = useRoutes()
   const { isOpen } = useConversation();
@@ -15,6 +22,10 @@ const MobileFooter = () => {
     <div
       className="fixed justify-between w-full bottom-0 z-40 flex items-center bg-white border-t-[1px] lg:hidden"
     >
+      <MobileItem 
+        label="user"
+        currentUser={currentUser}
+      />
       {routes.map((route, index) => (
         <MobileItem 
           key={index} 
@@ -25,6 +36,8 @@ const MobileFooter = () => {
           active={route.active}
         />
       ))}
+      
+      
     </div>
   )
 }

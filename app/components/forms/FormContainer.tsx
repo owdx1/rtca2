@@ -15,7 +15,7 @@ const FormContainer = (props: Props) => {
       <Switch isSelected={isLoginForm} onValueChange={setIsLoginForm} color="default" size="sm">
         {isLoginForm ? 'Login' : 'Register'}
       </Switch>
-      <div className="form-container border-2 p-12 w-[28rem]">
+      <div className="form-container border-2 max-sm:border-none p-12 w-[28rem]">
         {isLoginForm ? <LoginForm /> : <RegisterForm />}
       </div>
     </div>

@@ -40,10 +40,10 @@ const SettingsModal: React.FC<SettingsModalPropsI> = ({isOpen, currentUser, onCl
         </ModalHeader>
         <ModalBody className="flex flex-col">
           <CldUploadButton 
-          className='flex mx-auto' 
-          onSuccess={handleUpload}
-          options={{ maxFiles: 1 }}
-          uploadPreset='vo1x7wxc'
+            className='flex mx-auto' 
+            onSuccess={handleUpload}
+            options={{ maxFiles: 1 }}
+            uploadPreset='vo1x7wxc'
           >
             <div className='relative'>
               <Image 

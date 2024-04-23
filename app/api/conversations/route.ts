@@ -1,5 +1,6 @@
 import getCurrentUser from "@/app/action/getCurrentUser";
 import prisma from "@/app/lib/db";
+import { pusherServer } from "@/app/lib/pusher";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -27,7 +28,7 @@ export async function POST (request: NextRequest) {
             // if the current user is the one the create a group chat, he needs to be seperately added to the group
             connect: [
               ...members.map((member: {value: string}) => ({
-                id: member.value
+                id: member
               })),
               {
                 id: currentUser.id
@@ -39,6 +40,14 @@ export async function POST (request: NextRequest) {
           users: true
         }
       })
+
+      newConversation.users.forEach((user) => {
+        if(user.email) {
+          pusherServer.trigger(user.email, "conversation:new", newConversation)
+        }
+      })
+
+
       return NextResponse.json(newConversation)
     }
 
@@ -77,10 +86,16 @@ export async function POST (request: NextRequest) {
               id: userId
             }
           ]
-        }
+        },
       },
       include: {
         users: true
+      }
+    })
+
+    newConversation.users.map((user) => {
+      if(user.email) {
+        pusherServer.trigger(user.email, "conversation:new", newConversation)
       }
     })
 

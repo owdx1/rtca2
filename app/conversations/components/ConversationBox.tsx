@@ -1,3 +1,4 @@
+"use client"
 import Avatar from '@/app/components/Avatar'
 import useOtherUser from '@/app/hooks/useOtherUser'
 import { FullConversationType } from '@/app/types'
@@ -6,23 +7,28 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useMemo } from 'react'
 import {format} from "date-fns"
+import { AvatarGroup } from '@nextui-org/react'
+import { User } from '@prisma/client'
 
 
 interface ConversationBoxPropsI {
   data: FullConversationType,
   selected?: boolean
+  currentUser: User
 }
 
-const ConversationBox: React.FC<ConversationBoxPropsI> = ({ data , selected }) => {
 
-  const session = useSession();
+const ConversationBox: React.FC<ConversationBoxPropsI> = ({ data , selected, currentUser }) => {
+
   const router = useRouter();
 
+  console.log(currentUser, "current user")
+  console.log("GELEN DATA: ", data.users)
+
   const otherUser = useMemo(() => {
-    const currentUserEmail = session.data?.user?.email
-    const otherUser = data.users.filter((user) => user.email !== currentUserEmail)
+    const otherUser = data.users.filter((user) => user.email !== currentUser.email)
     return otherUser[0]
-  }, [session.data?.user?.email, data])
+  }, [currentUser, data])
 
 
   const handleClick = useCallback(() => {
@@ -34,24 +40,21 @@ const ConversationBox: React.FC<ConversationBoxPropsI> = ({ data , selected }) =
     return messages[messages.length - 1]
   }, [data.messages])
 
-  const userEmail = useMemo(() => {
-    return session.data?.user?.email
-  }, [session.data?.user?.email])
 
   const hasSeen = useMemo(() => {
     if(!lastMessage) { return false }
 
     const seenArray = lastMessage.seen || []
 
-    if(!userEmail) { return false }
+    if(!currentUser.email) { return false }
 
     return seenArray
-    .filter((user) => user.email === userEmail)
+    .filter((user) => user.email === currentUser.email)
     .length !== 0
 
 
   
-  }, [userEmail, lastMessage])
+  }, [currentUser, lastMessage])
 
   const lastMessageText = useMemo(() => {
     if(lastMessage?.image) {
@@ -70,11 +73,22 @@ const ConversationBox: React.FC<ConversationBoxPropsI> = ({ data , selected }) =
       })}
       onClick={handleClick}
     >
-      <Avatar  user={otherUser}/>
+      {
+        !data.isGroup ? 
+        (<Avatar  user={otherUser}/>)
+        :
+        (
+          <AvatarGroup isBordered max={3} total={data.users.length - 3}>
+            {data.users.map((user, index) => (
+              <Avatar user={user} key={index}/>
+            ))}
+          </AvatarGroup>
+        )
+      }
       <div className='min-w-0 flex-1'>
         <div className="focus:outline-none">
           <div className='flex justify-between items-center mb-1'>
-            <p className="text-md font-extralight text-gray-900">
+            <p className="text-md font-bold text-gray-900">
               { data.name || otherUser.name }
             </p>
             {lastMessage?.createdAt && 

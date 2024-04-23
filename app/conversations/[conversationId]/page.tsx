@@ -4,6 +4,7 @@ import React from 'react'
 import Header from './components/Header';
 import Body from './components/Body';
 import MessageForm from './components/MessageForm';
+import LoadingModal from '@/app/components/LoadingModal';
 
 interface ChatParamsI {
   conversationId: string

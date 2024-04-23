@@ -7,6 +7,7 @@ import React, { useMemo, useState } from 'react'
 import { HiChevronLeft } from 'react-icons/hi'
 import { HiEllipsisHorizontal } from 'react-icons/hi2'
 import ProfileDrawer from './ProfileDrawer'
+import { AvatarGroup } from '@nextui-org/react'
 
 interface HeaderPropsI {
   conversation: Conversation & {
@@ -48,12 +49,19 @@ const Header: React.FC<HeaderPropsI> = ({conversation}) => {
           <Avatar user={otherUser}/>
           <div className='flex flex-col'>
             <div>
-              {conversation.name || otherUser.name}
+              {conversation.name || otherUser?.name || "something wrong"}
             </div>
             <div className="text-sm font-extralight text-neutral-500">
               {statusText}
             </div>
           </div>
+          {/*<div>
+            <AvatarGroup isBordered>
+              {conversation.users.map((user, index) => (
+                <Avatar user={user} key={index}/>
+              ))}
+            </AvatarGroup> 
+            </div>*/}
         </div>
         <HiEllipsisHorizontal onClick={() => setDrawerOpen(true)} size={32} className="cursor-pointer text-neutral-600 hover:text-neutral-300" />
       </div>
