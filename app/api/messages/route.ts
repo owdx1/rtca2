@@ -45,7 +45,7 @@ export async function POST (request: NextRequest){
         id: conversationId
       },
       data: {
-        lastMessageAt: new Date(),
+        lastMessageAt: new Date(Date.now()),
         messages: {
           connect: {
             id: newMessage.id

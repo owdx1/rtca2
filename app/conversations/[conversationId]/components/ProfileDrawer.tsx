@@ -32,7 +32,12 @@ const ProfileDrawer: React.FC<ProfileDrawerPropsI> = ({isOpen, onClose, data}) =
   }, [session.data?.user?.email, data])
 
   const joinedDate = useMemo(() => {
-    return format(new Date(otherUser?.createdAt) , "PP")
+    if (otherUser?.createdAt){
+      return format(new Date(otherUser?.createdAt) , "PP")
+    } else {
+      return format(new Date(Date.now()), "PP")
+    }
+    
   }, [otherUser?.createdAt])
 
   const title = useMemo(() => {

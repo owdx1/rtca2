@@ -102,7 +102,7 @@ const SettingsModal: React.FC<SettingsModalPropsI> = ({isOpen, currentUser, onCl
           </Formik>
           <hr />
           <div>
-            <p>Joined: {format(new Date(currentUser?.createdAt), "PP")}</p>
+            <p>Joined: {format(new Date(currentUser?.createdAt || Date.now()), "PP")}</p>
           </div>
         </ModalBody>
         
