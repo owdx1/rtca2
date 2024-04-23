@@ -13,7 +13,7 @@ export async function DELETE (request: NextRequest, { params } : { params: IPara
     const currentUser = await getCurrentUser()
     const { conversationId } = params 
 
-  if(!currentUser?.email || !currentUser.id) {
+  if(!currentUser?.email || !currentUser?.id) {
     return new NextResponse("Unauthorized" , { status: 401 })
   }
 

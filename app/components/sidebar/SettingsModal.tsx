@@ -23,7 +23,7 @@ const SettingsModal: React.FC<SettingsModalPropsI> = ({isOpen, currentUser, onCl
   const router = useRouter();
   const email = currentUser?.email
   const [isLoading, setIsLoading] = useState(false)
-  const [imgUrl, setImgUrl] = useState(currentUser.image as string)
+  const [imgUrl, setImgUrl] = useState(currentUser?.image as string)
 
   const handleUpload = (result: any) => {
     setImgUrl(result?.info?.secure_url)
@@ -58,7 +58,7 @@ const SettingsModal: React.FC<SettingsModalPropsI> = ({isOpen, currentUser, onCl
           </CldUploadButton>
           <Formik
             initialValues={{
-              name: `${currentUser.name}`,
+              name: `${currentUser?.name}`,
               image: ''
             }}
             onSubmit={(values) => {
