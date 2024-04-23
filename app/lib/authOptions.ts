@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import NextAuth, {AuthOptions} from "next-auth"
+import  {AuthOptions} from "next-auth"
 import Github from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
