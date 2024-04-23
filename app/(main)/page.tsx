@@ -28,6 +28,7 @@ const LandingPage = (props: Props) => {
     }
   } ,[session?.status, router])
 
+  
   return (
     <div className='w-full h-full items-center justify-center flex max-sm:flex-col'>
       <Image 

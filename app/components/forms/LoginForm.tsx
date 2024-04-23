@@ -30,6 +30,7 @@ const LoginForm = (props: Props) => {
       onSubmit={async (values, actions) => {
         const response = await signIn("credentials", {
           ...values,
+          redirect: false
         })
         if (!response?.ok) {
           toast(`Something went wrong: ${response?.error}`)
