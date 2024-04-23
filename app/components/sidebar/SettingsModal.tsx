@@ -21,7 +21,7 @@ interface SettingsModalPropsI {
 const SettingsModal: React.FC<SettingsModalPropsI> = ({isOpen, currentUser, onClose}) => {
 
   const router = useRouter();
-  const email = currentUser.email
+  const email = currentUser?.email
   const [isLoading, setIsLoading] = useState(false)
   const [imgUrl, setImgUrl] = useState(currentUser.image as string)
 
