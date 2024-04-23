@@ -30,7 +30,7 @@ const MobileFooter: React.FC<MobileFooterPropsI> = ({ currentUser }) => {
         <MobileItem 
           key={index} 
           label={route.label} 
-          href={route.href} 
+          href={route?.href} 
           icon={route.icon} 
           onClick={route.onClick}
           active={route.active}
